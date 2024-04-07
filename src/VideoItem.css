@@ -1,0 +1,29 @@
+.video-item {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.thumbnail-container {
+  position: relative;
+  width: 100%;
+}
+
+.thumbnail-container img {
+  width: 100%;
+  height: auto;
+}
+
+.thumbnail-container .play-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2em;
+  color: white;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.thumbnail-container:hover .play-icon {
+  opacity: 0.7;
+}
