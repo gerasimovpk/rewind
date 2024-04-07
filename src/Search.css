@@ -8,9 +8,8 @@ input[type="text"] {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    width: 100%;
     box-sizing: border-box;
-    margin-bottom: 20px;
+    margin: 20px;
     font-size: 16px;
 }
 
@@ -36,14 +35,56 @@ input[type="text"]:focus {
     overflow: hidden;
     width: 100%;
     aspect-ratio: 16/9;
-  }
-  
-  .video-player iframe {
+}
+
+.video-player iframe {
     width: 100%;
     height: calc(100% + 60px);
     margin-top: -60px;
-  }
+}
 
-  .ytp-show-cards-title{
+.ytp-show-cards-title {
     display: none !important;
-    }
+}
+
+.search-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    /* Full height */
+}
+
+.search-input {
+    min-width: 480px;
+    /* Not full width */
+    width: 100%;
+    /* Make the input full width */
+}
+
+.search-container.top {
+    position: sticky;
+    top: 20px;
+    /* Add a gap from the top of the screen */
+    height: auto;
+    justify-content: flex-start;
+    width: 100%;
+    /* Make the container full width */
+}
+
+/* Search.css */
+
+.example-search {
+    color: grey;
+    font-size: 11pt;
+}
+
+.example-search button {
+    background: none;
+    border: none;
+    color: grey;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 11pt;
+}

@@ -1,6 +1,7 @@
 .video-item {
   position: relative;
   margin-bottom: 20px;
+  cursor: pointer;
 }
 
 .thumbnail-container {
