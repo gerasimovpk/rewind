@@ -1,12 +1,17 @@
 import React from 'react';
 import './VideoItem.css';
 import { filterTitle } from './utils';
+import classNames from 'classnames';
 
-function VideoItem({ video, onVideoSelect }) {
+function VideoItem({ video, onVideoSelect, isSelected }) {
   const { snippet } = video;
 
+  const videoItemClass = classNames('video-item', {
+    'video-item-selected': isSelected,
+  });
+
   return (
-    <div onClick={() => onVideoSelect(video)} className="video-item">
+    <div onClick={() => onVideoSelect(video)} className={videoItemClass}>
       <div className="thumbnail-container">
         <img src={video.snippet.thumbnails.high.url} alt={video.snippet.title} />
         <div className="thumbnail-blur"></div>
