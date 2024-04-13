@@ -1,7 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import VideoItem from './VideoItem';
-import games from './games'; // Import the games
+import VideoItem from '../../components/VideoItem/VideoItem';
+import SearchInput from '../../components/SearchInput/SearchInput';
+import YouTubePlayer from '../../components/YoutubePlayer/YouTubePlayer';
+
+import games from '../../api/games'; // Import the games
+import { searchVideos } from '../../api/api';
+
 import './Search.css'; // Import the CSS file
 
 function Search() {
@@ -9,11 +14,9 @@ function Search() {
     const [results, setResults] = useState([]);
     const [debouncedQuery, setDebouncedQuery] = useState(query);
     const [selectedVideo, setSelectedVideo] = useState(null);
-    
+
     const history = useHistory();
     const location = useLocation();
-
-    const playerRef = useRef(null); // Add this line
 
     const [exampleGame] = useState(games[Math.floor(Math.random() * games.length)]); // Select a random game
 
@@ -27,11 +30,7 @@ function Search() {
         history.push(`/?q=${encodeURIComponent(exampleGame)}`);
     };
 
-
-    const API_KEY = 'AIzaSyB0Hi1KNph95QBxq5LeEKtCl14cAJdw6Ps';
-
-    const handleSearch = (event) => {
-        event.preventDefault();
+    const handleSearch = (query) => {
         history.push(`/?q=${encodeURIComponent(query)}`);
     };
 
@@ -49,8 +48,7 @@ function Search() {
     // Fetch data when debouncedQuery changes
     useEffect(() => {
         if (debouncedQuery) {
-            fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=football full match ${debouncedQuery}&key=${API_KEY}&maxResults=10`)
-                .then(response => response.json())
+            searchVideos(debouncedQuery)
                 .then(data => {
                     setResults(data.items);
                     const params = new URLSearchParams(location.search);
@@ -63,57 +61,49 @@ function Search() {
         }
     }, [debouncedQuery, location.search]);
 
-    // Add this useEffect hook
     useEffect(() => {
-        if (selectedVideo && playerRef.current) {
-            playerRef.current.scrollIntoView({ behavior: 'smooth' });
-        }
-    }, [selectedVideo]);
+        const params = new URLSearchParams(location.search);
+        const q = params.get('q');
 
-    useEffect(() => {
-            const params = new URLSearchParams(location.search);
-            const q = params.get('q');
-        
-            if (q) {
-                setQuery(q);
-            }
-        }, [location]);
+        if (q) {
+            setQuery(q);
+        }
+    }, [location]);
+
+    // Extracted function
+    const renderVideoItem = (result) => {
+        const { videoId } = result.id;
+        return (
+            <VideoItem
+                key={videoId}
+                video={result}
+                onVideoSelect={handleVideoSelect}
+                isSelected={selectedVideo?.id?.videoId === videoId}
+            />
+        );
+    };
+
+    const hasResults = () => {
+        return results.length === 0;
+    }
 
     return (
         <div className={`search-container ${results.length > 0 ? 'top' : ''}`}>
-            <form onSubmit={handleSearch}>
-                <input
-                    className="search-input"
-                    type="text"
-                    value={query}
-                    onChange={(event) => setQuery(event.target.value)}
-                    placeholder="Match you want to relive"
-                />
-            </form>
-            {results.length === 0 && (
-                <div className="example-search">
+            <SearchInput onSearch={handleSearch} />
+
+            {hasResults() && (
+                <section className="example-search">
                     <span>For example</span>
                     <button onClick={handleExampleSearch}>
                         {exampleGame}
                     </button>
-                </div>
+                </section>
             )}
             <div className="video-grid">
-                {results.map(result => (
-                    <VideoItem key={result.id.videoId} video={result} onVideoSelect={handleVideoSelect} isSelected={selectedVideo.id.videoId === result.id.videoId} />
-                ))}
+                {results.map(renderVideoItem)}
             </div>
             {selectedVideo && (
-                <div className="video-player" ref={playerRef}>
-                    <iframe
-                        width="560"
-                        height="315"
-                        src={`https://www.youtube.com/embed/${selectedVideo.id.videoId}?autoplay=1&fs=0&mute=1`}
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                    ></iframe>
-                </div>
+                <YouTubePlayer videoId={selectedVideo.id.videoId} />
             )}
         </div>
     );

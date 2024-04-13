@@ -1,6 +1,6 @@
 import React from 'react';
 import './VideoItem.css';
-import { filterTitle } from './utils';
+import { filterTitle } from '../../utils/utils';
 import classNames from 'classnames';
 
 function VideoItem({ video, onVideoSelect, isSelected }) {
