@@ -1,0 +1,31 @@
+.results-container .search-section {
+    display: flex;
+    align-items: center;
+}
+
+.results-container .search-section .home-button {
+    margin-right: 10px;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.results-container .search-section .search-input {
+    flex-grow: 1;
+}
+
+/* Display videos in a grid with adjustable size, no more than 5 elements in a row */
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(20%, 1fr)); /* Create a responsive grid with no more than 5 items per row */
+    gap: 10px; /* Add some space between items */
+}
+
+/* Make the YouTube player always stick to the bottom */
+.youtube-player {
+    position: sticky;
+    bottom: 0;
+    z-index: 1; /* Ensure it stays on top of other elements */
+}

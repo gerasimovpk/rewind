@@ -1,33 +1,26 @@
 import React, { useState, useEffect } from 'react';
+import './SearchInput.css';
 
-const SearchInput = ({ onSearch }) => {
-  const [query, setQuery] = useState('');
-  const [debouncedQuery, setDebouncedQuery] = useState('');
+const SearchInput = ({ initialQuery, onSearch }) => {
+  const [query, setQuery] = useState(initialQuery || '');
+
+  useEffect(() => {
+    setQuery(initialQuery || '');
+  }, [initialQuery]);
 
   const handleSearch = (event) => {
     event.preventDefault();
-    onSearch(debouncedQuery);
+    onSearch(query);
   };
 
-  // Debounce search query
-  useEffect(() => {
-    const timerId = setTimeout(() => {
-      setDebouncedQuery(query);
-    }, 500); // 500ms delay
-
-    return () => {
-      clearTimeout(timerId);
-    };
-  }, [query]);
-
   return (
-    <form onSubmit={handleSearch}>
+    <form className='search-input' onSubmit={handleSearch}>
       <input
         type="text"
+        placeholder="What match are you looking for?"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
-      <button type="submit">Search</button>
     </form>
   );
 };

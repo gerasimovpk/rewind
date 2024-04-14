@@ -1,0 +1,28 @@
+.home-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Take full viewport height */
+    text-align: center;
+    gap: 20px; /* Add a gap between child elements */
+}
+
+.home-search-input {
+    width: 80%; /* Make the search input take 80% of the container's width */
+    max-width: 600px; /* But don't let it be wider than 600px */
+}
+
+.example-search {
+    color: grey;
+    font-size: 11pt;
+}
+
+.example-search button {
+    background: none;
+    border: none;
+    color: grey;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 11pt;
+}
